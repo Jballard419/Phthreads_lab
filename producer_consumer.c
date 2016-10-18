@@ -301,6 +301,7 @@ void *producer (void *parg)
      * the configured maximum, if so, we can quit.
      */
     if (*total_produced >= WORK_MAX) {
+      pthread_mutex_unlock(fifo->mutex);
       break;
     }
 
@@ -363,6 +364,7 @@ void *consumer (void *carg)
      * stop
      */
     if (*total_consumed >= WORK_MAX) {
+      pthread_mutex_unlock(fifo->mutex);
       break;
     }
 
