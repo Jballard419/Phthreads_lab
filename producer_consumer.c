@@ -313,8 +313,8 @@ void *producer (void *parg)
 
     item_produced = (*total_produced)++;
     queueAdd (fifo, item_produced);
-    pthread_cond_signal(fifo->notEmpty);
     pthread_mutex_unlock(fifo->mutex );
+    pthread_cond_broadcast(fifo->notEmpty);
 
 
     /*
@@ -375,8 +375,8 @@ void *consumer (void *carg)
 
     queueRemove (fifo, &item_consumed);
     (*total_consumed)++;
-    pthread_cond_signal(fifo->notFull);
     pthread_mutex_unlock(fifo->mutex );
+    pthread_cond_broadcast(fifo->notFull);
 
 
     /*
