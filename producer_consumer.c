@@ -290,6 +290,7 @@ void *producer (void *parg)
      */
     pthread_mutex_lock(fifo->mutex );
     while (fifo->full && *total_produced != WORK_MAX) {
+
       pthread_cond_wait(fifo->notFull,fifo->mutex);
 
       printf ("prod %d:  FULL.\n", my_tid);
@@ -351,8 +352,9 @@ void *consumer (void *carg)
      */
     pthread_mutex_lock(fifo->mutex );
     while (fifo->empty && *total_consumed != WORK_MAX) {
-      pthread_cond_wait(fifo->notEmpty,fifo->mutex);
       printf ("con %d:   EMPTY.\n", my_tid);
+      pthread_cond_wait(fifo->notEmpty,fifo->mutex);
+
     }
 
     /*
