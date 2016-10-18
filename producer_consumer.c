@@ -288,7 +288,7 @@ void *producer (void *parg)
      * If the queue is full, we have no place to put anything we
      * produce, so wait until it is not full.
      */
-    pthread_mutex_lock(&fifo->mutex );
+    pthread_mutex_lock(fifo->mutex );
     while (fifo->full && *total_produced != WORK_MAX) {
       pthread_mutex_wait(fifo->empty,fifo->mutex);
 
@@ -312,7 +312,7 @@ void *producer (void *parg)
 
     item_produced = (*total_produced)++;
     queueAdd (fifo, item_produced);
-    pthread_mutex_unlock(&fifo->mutex );
+    pthread_mutex_unlock(fifo->mutex );
 
 
     /*
@@ -349,7 +349,7 @@ void *consumer (void *carg)
      * If the queue is empty, there is nothing to do, so wait until it
      * si not empty.
      */
-    pthread_mutex_lock(&fifo->mutex );
+    pthread_mutex_lock(fifo->mutex );
     while (fifo->empty && *total_consumed != WORK_MAX) {
       pthread_mutex_wait(fifo->empty,fifo->mutex);
       printf ("con %d:   EMPTY.\n", my_tid);
@@ -372,7 +372,7 @@ void *consumer (void *carg)
 
     queueRemove (fifo, &item_consumed);
     (*total_consumed)++;
-    pthread_mutex_unlock(&fifo->mutex );
+    pthread_mutex_unlock(fifo->mutex );
 
 
     /*
